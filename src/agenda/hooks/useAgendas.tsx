@@ -1,16 +1,26 @@
-import { useEffect, useState } from "react";
-import { getAgendas } from "../store/actions";
+import useSWR, { useSWRConfig } from "swr";
+import APIUrls from "../../swr/api";
+import Fetch from "../../swr/fetch";
 
-interface IAgenda {
-    name: string
+export interface IAgenda {
+    Nombre: string,
+    Visible: boolean,
+    Color: number,
+    idAgenda: number,
+    idClinica: number
+    DuracionCita: number,
+    TicksUltimaSincronizacion: number,
+    TicksUltimoCambioPush: number,
 }
 
 export default function useAgendas() {
-    const [agendas, setAgendas] = useState<IAgenda[]>([]);
-
-    useEffect(() => {
-        getAgendas(5).then(setAgendas)
-    }, [])
-
-    return agendas;
+    const { mutate } = useSWRConfig();
+    const { data, error } = useSWR<IAgenda[]>(APIUrls.agendas, Fetch<IAgenda[]>)
+    const onUpdate = () => mutate(APIUrls.agendas)
+    return {
+        agendas: data,
+        loading: !data,
+        error,
+        onUpdate
+    };
 };
