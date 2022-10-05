@@ -1,18 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native';
+import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
+import React from 'react';
+import StackNavigationContainer from './src/navigation/container';
+import PaperAppContainer from './src/paper/config';
+import { SWRConfigContainer } from './src/swr/config';
 
-export default function App() {
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
+    <PaperAppContainer>
+      <SWRConfigContainer>
+        <ExpoStatusBar animated style="light" />
+        <StackNavigationContainer />
+      </SWRConfigContainer>
+    </PaperAppContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
