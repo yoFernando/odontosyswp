@@ -20,23 +20,23 @@ function AgendaRight({ visible }: { visible: boolean }) {
     )
 }
 
-function AgendaListItem({ agenda }: { agenda: IAgenda }) {
+function AgendaListItem({ agenda, onSelect }: { agenda: IAgenda, onSelect: (arg: IAgenda) => void }) {
+    const onPressAgenda = () => onSelect(agenda)
     return (
-        <TouchableOpacity activeOpacity={0.2}>
+        <TouchableOpacity activeOpacity={0.2} onPress={onPressAgenda}>
             <List.Item
                 left={() => <AgendaLeft color={agenda.Color} />}
                 right={() => <AgendaRight visible={agenda.Visible} />}
                 style={styles.paddingVertical10}
                 title={agenda.Nombre}
             />
-            <Divider style={AgendaStyles.divider} />
+            <Divider style={styles.divider} />
         </TouchableOpacity>
     );
 }
 
 const AgendaStyles = StyleSheet.create({
     color: { width: 20, height: 20, borderRadius: 20, marginHorizontal: 10 },
-    divider: { height: 1 }
 })
 
 export default AgendaListItem;

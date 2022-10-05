@@ -26,7 +26,6 @@ function SnackBarContext(props: IChildren) {
     const onOpenSnack = (str: string, action?: ISnackAction) => {
         setText(str.trim());
         setAction(action)
-        console.log('hola')
     }
     return (
         <SnackbarContext.Provider value={{ text, open, onOpenSnack }}>
