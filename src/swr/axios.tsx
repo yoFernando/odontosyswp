@@ -9,5 +9,5 @@ const AxiosClient = axios.create({
 export const assignToken = (token: string) => AxiosClient.defaults.headers.common['x-auth'] = token;
 export const unassingToken = () => delete AxiosClient.defaults.headers.common['x-auth'];
 
-assignToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZENsaW5pY2EiOjUsIlRpcG9EZVVzdWFyaW8iOjAsImlkVXN1YXJpbyI6MTYzOCwiaWF0IjoxNjY0NjQ0MjU3LCJleHAiOjE2NjUwNzYyNTd9.rBNOzizj0SyRkcMqwR8z-JJoOGkMv-AhLceNtfIZqKk')
+//assignToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZENsaW5pY2EiOjUsIlRpcG9EZVVzdWFyaW8iOjAsImlkVXN1YXJpbyI6MTYzOCwiaWF0IjoxNjY0NjQ0MjU3LCJleHAiOjE2NjUwNzYyNTd9.rBNOzizj0SyRkcMqwR8z-JJoOGkMv-AhLceNtfIZqKk')
 export default AxiosClient;
