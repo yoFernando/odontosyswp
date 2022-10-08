@@ -29,7 +29,7 @@ function AgendaSelector({ date, dates, onChangeDate }: IAgendaSelector) {
             visible={menu.open}
             onDismiss={menu.onClose}
             anchor={(
-                <Button textColor={Theme.colors.primary} contentStyle={styles.content} onPress={menu.onOpen}>
+                <Button textColor={Theme.colors.primary} icon="chevron-down" contentStyle={styles.content} onPress={menu.onOpen}>
                     {format(date, IFormat["DAY/MONTH"])}
                 </Button>
             )}

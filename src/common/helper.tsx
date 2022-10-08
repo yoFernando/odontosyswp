@@ -52,8 +52,29 @@ export const getEndHour = (cita: ICita) => {
     return parseInt(`${formatZero(date.getHours())}${formatZero(date.getMinutes())}`)
 }
 
-export const formatHour = (hour: number) => {
+export const formatHour = (hour: number, cutted: boolean = false) => {
     let time = getTrimedHour(hour)
     const hours = `${time[0]}${time[1]}`;
-    return `${hours}:${time[2]}${time[3]} ${parseInt(hours) > 11 ? 'pm' : 'am'}`
+    return `${hours}:${time[2]}${time[3]}${cutted ? '' : parseInt(hours) > 11 ? 'pm' : 'am'}`
 }
+
+export enum areaCodes {
+    us = 1,
+    do = 1,
+    uy = 598,
+    mx = 52,
+    cr = 506,
+    pe = 51,
+    ec = 593,
+    ar = 54,
+    ven = 58
+  }
+  
+  export const getPhone = (phoneStr: string, pais: areaCodes = areaCodes.uy) => {
+      const movil = ((pais === areaCodes.uy) ? phoneStr.slice(1) : phoneStr).replace(new RegExp(' ', 'g'), '').replace('+', '').trim()
+      const repeated = movil.indexOf(pais.toString())
+      if(repeated === 0 || repeated === 1){
+          return `+${pais}${movil.replace(pais.toString(), '')}`
+      }
+      return `+${pais}${movil}`;
+  }

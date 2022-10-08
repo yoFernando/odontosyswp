@@ -29,7 +29,7 @@ export interface ICita {
     "idCita": number
     "idClinica": number
     "idPaciente": number
-    "paciente": IPaciente
+    "paciente": null | IPaciente
 }
 export interface ICitas {
     [key: string]: ICita[]
@@ -46,13 +46,13 @@ export default function useAgendas(agenda: IAgenda) {
 
     const citas = useMemo(() => {
         if(!data || !date) return [];
-
+        
         return (data[date] || []).sort((a, b) => a.Hora - b.Hora);
     }, [ date, data ])
 
     useEffect(() => {
         if(data){
-            setDate(Object.keys(data)[0])
+            setDate(oldDate => oldDate || Object.keys(data)[0])
         }
     }, [data])
 

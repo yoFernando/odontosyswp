@@ -1,10 +1,30 @@
-import { View } from "react-native";
+import { useContext } from 'react';
+import { Linking, View } from "react-native";
 import { Surface, Divider, Text, IconButton } from "react-native-paper";
 import styles from "../../../common/styles";
-import { formatHour, getEndHour } from "../../../common/helper";
+import { extract } from "../../../swr/api";
 import { ICita } from "../../hooks/useCitas";
+import { IAgenda } from "../../hooks/useAgendas";
+import useAuth from './../../../auth/hooks/useAuth';
+import usePlantillaWhatsapp from "../../hooks/usePlantillas";
+import { SnackbarContext } from './../../../paper/snackbar/context';
+import { areaCodes, formatHour, getEndHour, getPhone } from "../../../common/helper";
+import template from './template';
 
-function CitaList({ cita }: { cita: ICita }) {
+function CitaList({ agenda, cita }: { agenda: IAgenda, cita: ICita }) {
+    const { onOpenSnack } = useContext(SnackbarContext)
+    const plantillas = usePlantillaWhatsapp(1);
+    const user = useAuth();
+
+    const onPressWhatsapp = () => {
+        const phone = getPhone(cita.paciente.movilDeEnvio, areaCodes[user.pais])
+        plantillas.get(cita.paciente.idPaciente)
+        .then(message => {
+            const url = `https://wa.me/${phone}?text=${encodeURI(template(message, cita, agenda))}`;
+            Linking.openURL(url)
+        })
+        .catch(extract(onOpenSnack))
+    }
     return (
         <View>
             <Surface elevation={0} style={[styles.paddingVertical10, styles.paddingHorizontal15]}>
@@ -20,7 +40,7 @@ function CitaList({ cita }: { cita: ICita }) {
                         </View>
                     </View>
                     <View>
-                        <IconButton icon="whatsapp" iconColor="green" size={18} onPress={() => {}} />
+                        <IconButton icon="whatsapp" iconColor="green" size={18} onPress={onPressWhatsapp} />
                     </View>
                 </View>
             </Surface>

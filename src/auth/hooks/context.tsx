@@ -1,6 +1,9 @@
-import { createContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, useEffect, useState } from "react";
 import { IChildren } from './../../common/types';
 import { assignToken, unassingToken } from './../../swr/axios';
+
+const AUTH_SESSION = 'AUTH_USER_STORE';
 
 export interface IUser {
     usuario: string,
@@ -26,29 +29,33 @@ interface IAuthState {
 }
 
 interface IAuth extends IAuthState {
-    onAuthChange: (user: undefined | IUser, token: string) => void
+    onAuthChange: (auth?: IAuthState) => void
 }
 
 export const AuthContext = createContext({} as IAuth);
 
-function getAuthState(){
-    return {
-        user: undefined,
-        loading: true,
-        token: ""
-    }
-}
-
 function AuthContextContainer(props: IChildren) {
-    const [state, setState] = useState<IAuthState>(getAuthState)
+    const [state, setState] = useState<IAuthState>({ user: undefined, loading: true, token: '' })
 
-    const onAuthChange = (user: undefined | IUser, token: string) => {
-        if(token){
-            assignToken(token)
-        } else {
-            unassingToken();
+    useEffect(() => {
+        AsyncStorage.getItem(AUTH_SESSION, function(_error?: Error, result?: string){
+            if(result){
+                onAuthChange(JSON.parse(result) as IAuthState)
+            } else {
+                onAuthChange();
+            }
+        })
+        // eslint-disable-next-line
+    }, [])
+
+    const onAuthChange = (auth?: IAuthState) => {
+        if(!auth){
+            setState(oldState => ({ ...oldState, loading: false }));
+            return unassingToken();
         }
-        setState({ user, token, loading: false });
+        assignToken(auth.token)
+        AsyncStorage.setItem(AUTH_SESSION, JSON.stringify(auth), () => {});
+        setState({ user: auth.user, token: auth.token, loading: false });
     }
 
     return (
