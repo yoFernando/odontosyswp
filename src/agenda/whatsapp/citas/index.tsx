@@ -7,11 +7,14 @@ import useCitas from "../../hooks/useCitas";
 import AgendaSelector from "./selector";
 import CitaList from "./citaList";
 import ImageNotFound from '../../../assets/undraw_doctors_hwty.svg';
+import { URL } from "../../../navigation";
 
-function AgendaSelectedContainer({ route }: IAgendaSelectedParamStack) {
+function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStack) {
     const { agenda, citas, date, dates, loading, onUpdate, onChangeDate } = useCitas(route.params);
+    const onPressBack = () => navigation.goBack();
+    const onPressProfile = () => navigation.navigate(URL.profile)
     return (
-        <Appbar title={`${agenda.Nombre} - Citas`}>
+        <Appbar title={`${agenda.Nombre} - Citas`} onPressBack={onPressBack} onPressProfile={onPressProfile}>
             <ScrollView
                 contentContainerStyle={styles.grow}
                 refreshControl={<RefreshControl refreshing={!!(date && loading)} onRefresh={onUpdate} />}

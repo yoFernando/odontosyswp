@@ -1,5 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IChildren } from './../../common/types';
 import { assignToken, unassingToken } from './../../swr/axios';
 
@@ -23,7 +23,7 @@ export interface IUser {
 }
 
 interface IAuthState {
-    user: undefined | IUser,
+    user?: IUser,
     loading: boolean,
     token: string,
 }
@@ -32,7 +32,7 @@ interface IAuth extends IAuthState {
     onAuthChange: (auth?: IAuthState) => void
 }
 
-export const AuthContext = createContext({} as IAuth);
+export const AuthContext = createContext<IAuth>({ user: undefined, loading: true, token: '', onAuthChange: (_auth?: IAuthState) => {} });
 
 function AuthContextContainer(props: IChildren) {
     const [state, setState] = useState<IAuthState>({ user: undefined, loading: true, token: '' })
@@ -50,7 +50,8 @@ function AuthContextContainer(props: IChildren) {
 
     const onAuthChange = (auth?: IAuthState) => {
         if(!auth){
-            setState(oldState => ({ ...oldState, loading: false }));
+            setState({ user: undefined, token: '', loading: false });
+            AsyncStorage.removeItem(AUTH_SESSION, () => { })
             return unassingToken();
         }
         assignToken(auth.token)

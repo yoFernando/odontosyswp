@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { Linking, View } from "react-native";
 import { Surface, Divider, Text, IconButton } from "react-native-paper";
 import styles from "../../../common/styles";
-import { extract } from "../../../swr/api";
 import { ICita } from "../../hooks/useCitas";
 import { IAgenda } from "../../hooks/useAgendas";
 import useAuth from './../../../auth/hooks/useAuth';
@@ -10,6 +9,7 @@ import usePlantillaWhatsapp from "../../hooks/usePlantillas";
 import { SnackbarContext } from './../../../paper/snackbar/context';
 import { areaCodes, formatHour, getEndHour, getPhone } from "../../../common/helper";
 import template from './template';
+import { extract } from './../../../swr/axios';
 
 function CitaList({ agenda, cita }: { agenda: IAgenda, cita: ICita }) {
     const { onOpenSnack } = useContext(SnackbarContext)

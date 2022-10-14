@@ -40,6 +40,9 @@ const styles = StyleSheet.create({
     middle: {
         alignItems: 'center'
     },
+    between: {
+        justifyContent: 'space-between'
+    },
     row: {
         flexDirection: 'row',
     },

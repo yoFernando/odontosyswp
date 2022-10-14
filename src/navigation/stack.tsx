@@ -4,8 +4,10 @@ import URL from "./routes";
 
 export type IRootStackType = {
     [URL.agenda]: undefined,
-    [URL.agenda_selected]: IAgenda
+    [URL.agenda_selected]: IAgenda,
+    [URL.profile]: undefined
 };
 
+export type IProfileParamStack = NativeStackScreenProps<IRootStackType, URL.profile>
 export type IAgendaParamStack = NativeStackScreenProps<IRootStackType, URL.agenda>
 export type IAgendaSelectedParamStack = NativeStackScreenProps<IRootStackType, URL.agenda_selected>

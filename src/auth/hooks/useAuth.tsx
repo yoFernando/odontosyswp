@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { AuthContext, IUser } from "./context";
+import { AuthContext } from "./context";
 
 function useAuth() {
     const { user } = useContext(AuthContext)
-    return user as IUser
+    return user
 }
 
 export default useAuth;

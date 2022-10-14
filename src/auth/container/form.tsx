@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, TextInput } from "react-native";
+import { View, Image, StyleSheet, TextInput, Linking } from "react-native";
 import { Button, Text, TextInput as PaperInput } from "react-native-paper";
 import styles from "../../common/styles";
 import useOpen from './../../common/hooks/useOpen';
@@ -19,11 +19,15 @@ interface ILoginForm {
 function LoginContainer({ state, error, loading, onChangeState, onSubmitState }: ILoginForm) {
   const view = useOpen();
   const inputRef = useRef<TextInput>();
+  
   const imageStyle = StyleSheet.flatten({ width: 100, height: 100 })
+  const containerStyle = StyleSheet.flatten([styles.grow, styles.h100, { justifyContent: 'center', backgroundColor: 'white' }])
+
   const onSubmitEditing = () => inputRef.current.focus();
   const onChange = (name: keyof ILoginState) => (value: string) => onChangeState(name, value);
+  const onPressReset = () => Linking.openURL(`https://app.odontosys.com/forget`);
   return (
-    <View style={[styles.grow, styles.h100, { justifyContent: 'center' }]}>
+    <View style={containerStyle}>
 
       <View style={styles.center}>
         <View style={styles.paddingVertical20}>
@@ -73,7 +77,7 @@ function LoginContainer({ state, error, loading, onChangeState, onSubmitState }:
           </Button>
         </View>
         <View style={styles.paddingVertical10}>
-          <Button mode="text">
+          <Button mode="text" onPress={onPressReset}>
             No recuerdo mi contraseña
           </Button>
         </View>

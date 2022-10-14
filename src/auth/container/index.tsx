@@ -1,15 +1,12 @@
 import Form from './form'
 import { useState } from 'react';
 import AxiosClient from '../../swr/axios';
-import APIUrls, { extract } from '../../swr/api';
+import APIUrls from '../../swr/api';
 import { useContext } from 'react';
 import { SnackbarContext } from './../../paper/snackbar/context';
-import { AuthContext, IUser } from './../hooks/context';
+import { AuthContext } from './../hooks/context';
+import { extract } from './../../swr/axios';
 
-interface IAuthState {
-  user: IUser,
-  token: string
-}
 export interface ILoginState {
   username: string,
   password: string

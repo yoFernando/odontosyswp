@@ -1,5 +1,14 @@
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { BASE_URL } from "./api";
+
+interface IAxiosCallback {
+    callback: (message: string) => void
+}
+interface IAxiosErrorResponse {
+    data: {
+        error: string
+    }
+}
 
 const AxiosClient = axios.create({
     baseURL: BASE_URL,
@@ -9,5 +18,16 @@ const AxiosClient = axios.create({
 export const assignToken = (token: string) => AxiosClient.defaults.headers.common['x-auth'] = token;
 export const unassingToken = () => delete AxiosClient.defaults.headers.common['x-auth'];
 
-//assignToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZENsaW5pY2EiOjUsIlRpcG9EZVVzdWFyaW8iOjAsImlkVXN1YXJpbyI6MTYzOCwiaWF0IjoxNjY0NjQ0MjU3LCJleHAiOjE2NjUwNzYyNTd9.rBNOzizj0SyRkcMqwR8z-JJoOGkMv-AhLceNtfIZqKk')
+export const extract = (callback: IAxiosCallback['callback']) => (e: AxiosError) => {
+    const { message, status, response } = e;
+    if(parseInt(status) === 403 || response.status === 403){
+        callback('Es necesario iniciar sesion nuevamente.')
+    } else if(!e.response || (e.response && !e.response.data)){
+        callback(message);
+    } else {
+        const response = e.response as IAxiosErrorResponse;
+        callback(response.data.error);
+    }
+}
+
 export default AxiosClient;
