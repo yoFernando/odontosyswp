@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { Linking, View } from "react-native";
 import { Surface, Divider, Text, IconButton } from "react-native-paper";
 import styles from "../../../common/styles";
@@ -10,21 +10,41 @@ import { SnackbarContext } from './../../../paper/snackbar/context';
 import { areaCodes, formatHour, getEndHour, getPhone } from "../../../common/helper";
 import template from './template';
 import { extract } from './../../../swr/axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const getId = (cita: ICita) => `cita/${cita.idCita}/agenda/${cita.idAgenda}/clinica/${cita.idClinica}`;
 
 function CitaList({ agenda, cita }: { agenda: IAgenda, cita: ICita }) {
     const { onOpenSnack } = useContext(SnackbarContext)
     const plantillas = usePlantillaWhatsapp(1);
     const user = useAuth();
 
-    const onPressWhatsapp = () => {
-        const phone = getPhone(cita.paciente.movilDeEnvio, areaCodes[user.pais])
-        plantillas.get(cita.paciente.idPaciente)
-        .then(message => {
-            const url = `https://wa.me/${phone}?text=${encodeURI(template(message, cita, agenda))}`;
-            Linking.openURL(url)
+    const [enable, setEnable] = useState(true);
+
+    useEffect(() => {
+        AsyncStorage.getItem(getId(cita), function (_error, result) {
+            if (result && (JSON.parse(result) === true)) {
+                setEnable(false);
+            }
         })
-        .catch(extract(onOpenSnack))
+    }, [])
+
+    const onPressWhatsapp = () => {
+        setEnable(false);
+        const phone = getPhone(cita.paciente.movilDeEnvio, areaCodes[user.pais])
+        AsyncStorage.setItem(getId(cita), "true", () => {})
+        plantillas.get(cita.paciente.idPaciente)
+            .then(message => {
+                const url = `https://wa.me/${phone}?text=${encodeURI(template(message, cita, agenda))}`;
+                Linking.openURL(url)
+            })
+            .catch(extract(onOpenSnack))
     }
+
+    if (!cita.paciente || cita.paciente.movilDeEnvio.length < 5) {
+        return null;
+    }
+
     return (
         <View>
             <Surface elevation={0} style={[styles.paddingVertical10, styles.paddingHorizontal15]}>
@@ -40,7 +60,7 @@ function CitaList({ agenda, cita }: { agenda: IAgenda, cita: ICita }) {
                         </View>
                     </View>
                     <View>
-                        <IconButton icon="whatsapp" iconColor="green" size={18} onPress={onPressWhatsapp} />
+                        <IconButton icon="whatsapp" iconColor={enable ? "green" : 'grey'} size={18} onPress={onPressWhatsapp} />
                     </View>
                 </View>
             </Surface>

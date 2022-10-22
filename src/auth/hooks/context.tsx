@@ -32,14 +32,14 @@ interface IAuth extends IAuthState {
     onAuthChange: (auth?: IAuthState) => void
 }
 
-export const AuthContext = createContext<IAuth>({ user: undefined, loading: true, token: '', onAuthChange: (_auth?: IAuthState) => {} });
+export const AuthContext = createContext<IAuth>({ user: undefined, loading: true, token: '', onAuthChange: (_auth?: IAuthState) => { } });
 
 function AuthContextContainer(props: IChildren) {
     const [state, setState] = useState<IAuthState>({ user: undefined, loading: true, token: '' })
 
     useEffect(() => {
-        AsyncStorage.getItem(AUTH_SESSION, function(_error?: Error, result?: string){
-            if(result){
+        AsyncStorage.getItem(AUTH_SESSION, function (_error?: Error, result?: string) {
+            if (result) {
                 onAuthChange(JSON.parse(result) as IAuthState)
             } else {
                 onAuthChange();
@@ -49,13 +49,14 @@ function AuthContextContainer(props: IChildren) {
     }, [])
 
     const onAuthChange = (auth?: IAuthState) => {
-        if(!auth){
+        if (!auth) {
             setState({ user: undefined, token: '', loading: false });
             AsyncStorage.removeItem(AUTH_SESSION, () => { })
             return unassingToken();
         }
         assignToken(auth.token)
-        AsyncStorage.setItem(AUTH_SESSION, JSON.stringify(auth), () => {});
+        removeAllDates();
+        AsyncStorage.setItem(AUTH_SESSION, JSON.stringify(auth), () => { });
         setState({ user: auth.user, token: auth.token, loading: false });
     }
 
@@ -64,6 +65,15 @@ function AuthContextContainer(props: IChildren) {
             {props.children}
         </AuthContext.Provider>
     );
+}
+
+export const removeAllDates = () => {
+    AsyncStorage.getAllKeys(function (_error, result) {
+        if (!_error && result) {
+            const keys = result.filter(item => item !== AUTH_SESSION);
+            if (keys.length) AsyncStorage.multiRemove(keys);
+        }
+    })
 }
 
 export default AuthContextContainer;

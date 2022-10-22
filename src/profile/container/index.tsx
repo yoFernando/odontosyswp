@@ -1,13 +1,13 @@
 import { useContext } from 'react';
 import { Text, View, Image, StyleSheet, Alert } from 'react-native';
-import { IProfileParamStack } from '../../navigation/stack';
 import ProfileAppbar from './appbar';
-import { formatAvatar } from '../../common/helper';
 import styles from '../../common/styles';
+import { formatAvatar } from '../../common/helper';
 import { Button } from 'react-native-paper';
 import { Theme } from '../../paper/config';
 import { AuthContext } from '../../auth/hooks/context';
 import { CommonActions } from '@react-navigation/native';
+import { IProfileParamStack } from '../../navigation';
 
 function ProfileContainer({ navigation }: IProfileParamStack) {
   const { user, onAuthChange } = useContext(AuthContext)

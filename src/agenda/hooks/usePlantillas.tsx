@@ -19,7 +19,7 @@ export default function usePlantillaWhatsapp(idPlantilla: number) {
         }
 
         setLoading(true)
-        const uri = assign(`/plantillas/ws/$id`, ['$id'], [idPlantilla])
+        const uri = assign(`/plantillas/ws/$id`, ['$id'], [idPlantilla.toString()])
         const response = await AxiosClient.get<IPlantilla>(uri, { params: { idPaciente } })
         setLoading(false)
 

@@ -1,8 +1,10 @@
-import { IRootStackType, IAgendaParamStack } from "./stack";
+import { IRootStackType, IProfileParamStack, IAgendaSelectedParamStack, IAgendaParamStack } from "./stack";
 import URL from "./routes";
 
 export {
     URL,
     IAgendaParamStack,
-    IRootStackType
+    IProfileParamStack,
+    IAgendaSelectedParamStack,
+    IRootStackType,
 }

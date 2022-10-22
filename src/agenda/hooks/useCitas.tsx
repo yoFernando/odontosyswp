@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useMemo } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import APIUrls, { assign } from "../../swr/api";
-import Fetch from "../../swr/fetch";
 import { IAgenda } from "./useAgendas";
+import { DateContext } from './useDateContext';
+import Axios from "../../swr/axios";
+import { removeAllDates } from "../../auth/hooks/context";
 
 export interface IPaciente {
     "idClinica": number,
@@ -31,39 +33,38 @@ export interface ICita {
     "idPaciente": number
     "paciente": null | IPaciente
 }
-export interface ICitas {
+interface ICitas {
     [key: string]: ICita[]
 }
 
+const customFetcher = async (agenda: IAgenda, dates: string[]) => {
+    const obj: ICitas = {};
+    const responses = await Promise.all(
+        dates.map(date => {
+            const uri = assign(APIUrls.citas, ['$agenda', '$year', '$month', '$day'], [agenda.idAgenda.toString(), ...date.split('-')]);
+            return Axios.get<ICita[]>(uri);
+        })
+    );
+    responses.map((res, index: number) => obj[dates[index]] = res.data);
+    return obj;
+}
+
 export default function useAgendas(agenda: IAgenda) {
-    const uri = assign(APIUrls.citas,['$id'], [agenda.idAgenda])
+    const uri = `citas/week/${agenda.idAgenda}`;
     const { mutate } = useSWRConfig();
-    const { data, error } = useSWR<ICitas>(uri, Fetch<ICitas>)
-    const [date, setDate] = useState("")
+    const { date, dates } = useContext(DateContext);
+    const { data, error } = useSWR<ICitas>(uri, () => customFetcher(agenda, dates))
 
-    const onUpdate = () => mutate(uri)
-    const onChangeDate = (newDate: string) => setDate(newDate)
-
-    const citas = useMemo(() => {
-        if(!data || !date) return [];
-        
-        return (data[date] || []).sort((a, b) => a.Hora - b.Hora);
-    }, [ date, data ])
-
-    useEffect(() => {
-        if(data){
-            setDate(oldDate => oldDate || Object.keys(data)[0])
-        }
-    }, [data])
+    const onUpdate = () => {
+        removeAllDates();
+        mutate(uri)
+    }
 
     return {
         agenda,
-        date,
-        dates: Object.keys(data || {}),
-        citas,
+        citas: data ? data[date].sort((a, b) => a.Hora - b.Hora) : [],
         loading: !data,
         error,
-        onUpdate,
-        onChangeDate
+        onUpdate
     };
 };

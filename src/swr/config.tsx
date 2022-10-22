@@ -17,7 +17,7 @@ export const SWRConfigContainer = (props: IChildren) => {
                         const error = JSON.parse(JSON.stringify(err))
                         if (error.status === 403) {
                             onAuthChange();
-                            extract(onOpenSnack)(err)
+                            extract(onOpenSnack)(error)
                             return;
                         }
                     } catch (error) {
