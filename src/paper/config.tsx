@@ -7,7 +7,8 @@ const Theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: "#014990",
-    secondary: "#56004e"
+    secondary: "#56004e",
+    danger: '#db1c2c',
     // --color-primary: #;
     // --color-primary-alt: #00aeef;
     // --color-secondary: #;

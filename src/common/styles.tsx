@@ -40,6 +40,9 @@ const styles = StyleSheet.create({
     middle: {
         alignItems: 'center'
     },
+    between: {
+        justifyContent: 'space-between'
+    },
     row: {
         flexDirection: 'row',
     },
@@ -72,6 +75,9 @@ const styles = StyleSheet.create({
     },
     paddingHorizontal20: {
         paddingHorizontal: 20
+    },
+    input: {
+        backgroundColor: 'white',
     }
 })
 
