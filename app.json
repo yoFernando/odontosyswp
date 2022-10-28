@@ -16,7 +16,8 @@
       "policy": "sdkVersion"
     },
     "android": {
-      "package": "com.dandresfg.odontosyswp"
+      "versionCode": 2,
+      "package": "com.odontosyswp"
     },
     "ios": {},
     "updates": {
