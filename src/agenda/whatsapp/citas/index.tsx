@@ -9,15 +9,16 @@ import CitaList from "./citaList";
 import ImageNotFound from '../../../assets/undraw_doctors_hwty.svg';
 import { URL, IAgendaSelectedParamStack } from "../../../navigation";
 import { IChildren } from './../../../common/types';
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import AgendaSwitchModal from './../container/switch';
+import { IAgenda } from '../../hooks/useAgendas';
 
 function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStack) {
-    const bottomModal = useRef<BottomSheetModal>(null)
+    const bottomSheet = useRef(null)
     const { agenda, citas, loading, onUpdate } = useCitas(route.params);
     const onPressBack = () => navigation.goBack();
     const onPressProfile = () => navigation.navigate(URL.profile)
-    const onPressTitle = () => bottomModal.current?.present();
+    const onPressTitle = () => bottomSheet?.current.show()
+    const onSelectAgenda = (agenda: IAgenda) => navigation.push(URL.agenda_selected, agenda);
 
     const renderHeader = (
         <View style={styles.paddingVertical15}>
@@ -54,7 +55,7 @@ function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStac
                     </View>
                 )
             }
-            <AgendaSwitchModal modalRef={bottomModal} />
+            <AgendaSwitchModal modalRef={bottomSheet} onSelectAgenda={onSelectAgenda} />
         </Appbar>
     );
 }

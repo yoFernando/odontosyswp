@@ -49,7 +49,7 @@ const customFetcher = async (agenda: IAgenda, dates: string[]) => {
     return obj;
 }
 
-export default function useAgendas(agenda: IAgenda) {
+export default function useCitas(agenda: IAgenda) {
     const uri = `citas/week/${agenda.idAgenda}`;
     const { mutate } = useSWRConfig();
     const { date, dates, onRefreshDate } = useContext(DateContext);

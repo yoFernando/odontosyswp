@@ -1,19 +1,25 @@
-import React, { MutableRefObject } from "react";
-import { View } from "react-native";
-import { Text } from "react-native-paper";
-import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
+import React from "react";
+import { useWindowDimensions } from "react-native";
+import BottomSheet from "react-native-gesture-bottom-sheet";
+import { List } from "react-native-paper";
+import useAgendas from "../../hooks/useAgendas";
+import AgendaItem from './listItem';
 
-function AgendaSwitchModal({ modalRef }: { modalRef: MutableRefObject<BottomSheetModal> }) {
+function AgendaSwitchModal({ modalRef, onSelectAgenda }) {
+    const height = useWindowDimensions().height;
+    const { agendas } = useAgendas();
     return (
         <BottomSheet
-            index={1}
             ref={modalRef}
-            snapPoints={['50%', '100%']}
-            // onChange={handleSheetChanges}
+            height={height / 2}
+            draggable
+            hasDraggableIcon
         >
-            <View>
-                <Text>Awesome 🎉</Text>
-            </View>
+            <List.Section>
+                {agendas.map(agenda =>
+                    <AgendaItem agenda={agenda} key={agenda.idAgenda} onSelect={onSelectAgenda} />
+                )}
+            </List.Section>
         </BottomSheet>
     );
 }
