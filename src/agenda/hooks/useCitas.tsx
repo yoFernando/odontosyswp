@@ -52,10 +52,11 @@ const customFetcher = async (agenda: IAgenda, dates: string[]) => {
 export default function useAgendas(agenda: IAgenda) {
     const uri = `citas/week/${agenda.idAgenda}`;
     const { mutate } = useSWRConfig();
-    const { date, dates } = useContext(DateContext);
+    const { date, dates, onRefreshDate } = useContext(DateContext);
     const { data, error } = useSWR<ICitas>(uri, () => customFetcher(agenda, dates))
 
     const onUpdate = () => {
+        onRefreshDate();
         removeAllDates();
         mutate(uri)
     }

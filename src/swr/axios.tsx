@@ -20,7 +20,7 @@ export const unassingToken = () => delete AxiosClient.defaults.headers.common['x
 
 export const extract = (callback: IAxiosCallback['callback']) => (e: AxiosError) => {
     const { message, status, response } = e;
-    if(parseInt(status) === 403 || response.status === 403){
+    if(parseInt(status) === 403 || response && response.status === 403){
         callback('Es necesario iniciar sesion nuevamente.')
     } else if(!e.response || (e.response && !e.response.data)){
         callback(message);

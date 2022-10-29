@@ -3,7 +3,7 @@ import { ActivityIndicator, List } from "react-native-paper";
 import Appbar from "./appbar";
 import styles from "../../../common/styles";
 import useAgendas, { IAgenda } from "../../hooks/useAgendas";
-import AgendaListItem from "./agendaList";
+import AgendaListItem from "./listItem";
 import { IAgendaParamStack, URL } from "../../../navigation";
 
 function AgendaContainer({ navigation }: IAgendaParamStack) {

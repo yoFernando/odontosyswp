@@ -1,4 +1,5 @@
-import { FlatList, RefreshControl, View } from "react-native";
+import { useRef } from 'react';
+import { FlatList, GestureResponderEvent, RefreshControl, View } from "react-native";
 import { ActivityIndicator, Text } from "react-native-paper";
 import styles from "../../../common/styles";
 import Appbar from "../container/appbar";
@@ -8,11 +9,15 @@ import CitaList from "./citaList";
 import ImageNotFound from '../../../assets/undraw_doctors_hwty.svg';
 import { URL, IAgendaSelectedParamStack } from "../../../navigation";
 import { IChildren } from './../../../common/types';
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import AgendaSwitchModal from './../container/switch';
 
 function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStack) {
+    const bottomModal = useRef<BottomSheetModal>(null)
     const { agenda, citas, loading, onUpdate } = useCitas(route.params);
     const onPressBack = () => navigation.goBack();
     const onPressProfile = () => navigation.navigate(URL.profile)
+    const onPressTitle = () => bottomModal.current?.present();
 
     const renderHeader = (
         <View style={styles.paddingVertical15}>
@@ -23,7 +28,7 @@ function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStac
     const renderCita = ({ item }: { item: ICita }) => <CitaList agenda={agenda} cita={item} />
 
     return (
-        <Appbar title={`${agenda.Nombre} - Citas`} onPressBack={onPressBack} onPressProfile={onPressProfile}>
+        <Appbar title={`${agenda.Nombre} - Citas`} onPressTitle={onPressTitle} onPressBack={onPressBack} onPressProfile={onPressProfile}>
             {
                 (loading) ? (
                     <View style={[styles.grow, styles.center]}>
@@ -49,6 +54,7 @@ function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStac
                     </View>
                 )
             }
+            <AgendaSwitchModal modalRef={bottomModal} />
         </Appbar>
     );
 }

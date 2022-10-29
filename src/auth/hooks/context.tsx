@@ -54,10 +54,11 @@ function AuthContextContainer(props: IChildren) {
             AsyncStorage.removeItem(AUTH_SESSION, () => { })
             return unassingToken();
         }
-        assignToken(auth.token)
         removeAllDates();
-        AsyncStorage.setItem(AUTH_SESSION, JSON.stringify(auth), () => { });
-        setState({ user: auth.user, token: auth.token, loading: false });
+        AsyncStorage.setItem(AUTH_SESSION, JSON.stringify(auth), () => {
+            assignToken(auth.token)
+            setState({ user: auth.user, token: auth.token, loading: false });
+        });
     }
 
     return (
