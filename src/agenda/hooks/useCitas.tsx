@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import APIUrls, { assign } from "../../swr/api";
 import { IAgenda } from "./useAgendas";
@@ -49,15 +49,16 @@ const customFetcher = async (agenda: IAgenda, dates: string[]) => {
     return obj;
 }
 
-export default function useAgendas(agenda: IAgenda) {
+export default function useCitas(agenda: IAgenda) {
     const uri = `citas/week/${agenda.idAgenda}`;
     const { mutate } = useSWRConfig();
-    const { date, dates } = useContext(DateContext);
+    const { date, dates, onRefreshDate } = useContext(DateContext);
     const { data, error } = useSWR<ICitas>(uri, () => customFetcher(agenda, dates))
 
     const onUpdate = () => {
         removeAllDates();
-        mutate(uri)
+        onRefreshDate();
+        mutate(uri);
     }
 
     return {

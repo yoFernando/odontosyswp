@@ -16,13 +16,11 @@ export const SWRConfigContainer = (props: IChildren) => {
                     try {
                         const error = JSON.parse(JSON.stringify(err))
                         if (error.status === 403) {
-                            onAuthChange();
                             extract(onOpenSnack)(error)
-                            return;
+                            onAuthChange();
                         }
                     } catch (error) {
                         console.log(error);
-                    } finally {
                         onOpenSnack(err.message)
                     }
                 },
