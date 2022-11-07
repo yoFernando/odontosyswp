@@ -4,7 +4,13 @@ import { Divider, List } from "react-native-paper";
 import styles, { intToColor } from "../../../common/styles";
 import { IAgenda } from "../../hooks/useAgendas";
 
-function AgendaItem({ agenda, onSelect }: { agenda: IAgenda, onSelect: (arg: IAgenda) => void }) {
+interface IAgendaItem {
+    agenda: IAgenda,
+    active?: boolean,
+    onSelect: (arg: IAgenda) => void
+}
+
+function AgendaItem({ agenda, active, onSelect }: IAgendaItem) {
     const onPressAgenda = () => onSelect(agenda)
     return (
         <TouchableOpacity activeOpacity={0.2} onPress={onPressAgenda}>
@@ -16,6 +22,7 @@ function AgendaItem({ agenda, onSelect }: { agenda: IAgenda, onSelect: (arg: IAg
                         <View style={StyleSheet.flatten([AgendaStyles.color, { backgroundColor: intToColor(agenda.Color) }])} />
                     </View>
                 )}
+                right={active ? (props) => <List.Icon {...props} color="green" icon="check" /> : undefined}
             />
             <Divider style={styles.divider} />
         </TouchableOpacity>
