@@ -37,12 +37,28 @@ interface ICitas {
     [key: string]: ICita[]
 }
 
+const attributes = [
+    "idClinica",
+    "idAgenda",
+    "idCita",
+    "idPaciente",
+    "Fecha",
+    "Hora",
+    "Duracion",
+    "Concurrio",
+    "Confirmada",
+    // "InfoExtra",
+    // "Nota",
+    // "ColorDeFondo",
+    // "TipoDeCita",
+]
+
 const customFetcher = async (agenda: IAgenda, dates: string[]) => {
     const obj: ICitas = {};
     const responses = await Promise.all(
         dates.map(date => {
             const uri = assign(APIUrls.citas, ['$agenda', '$year', '$month', '$day'], [agenda.idAgenda.toString(), ...date.split('-')]);
-            return Axios.get<ICita[]>(uri);
+            return Axios.get<ICita[]>(uri, { params: { attr: attributes } });
         })
     );
     responses.map((res, index: number) => obj[dates[index]] = res.data);
