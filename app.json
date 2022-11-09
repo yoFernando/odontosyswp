@@ -2,7 +2,7 @@
   "expo": {
     "name": "Odontosys Whatsapp",
     "slug": "odontosyswp",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "sdkVersion": "45.0.0",
     "backgroundColor": "#014990",
     "primaryColor": "#014990",
@@ -16,7 +16,7 @@
       "policy": "sdkVersion"
     },
     "android": {
-      "versionCode": 4,
+      "versionCode": 5,
       "package": "com.odontosyswp"
     },
     "ios": {},

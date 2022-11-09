@@ -1,5 +1,5 @@
 import { useEffect, useContext, useState } from 'react';
-import { Linking, View } from "react-native";
+import { Linking, View, TouchableOpacity } from "react-native";
 import { Surface, Divider, Text, IconButton } from "react-native-paper";
 import styles from "../../../common/styles";
 import { ICita } from "../../hooks/useCitas";
@@ -48,7 +48,7 @@ function CitaList({ agenda, cita }: { agenda: IAgenda, cita: ICita }) {
     return (
         <View>
             <Surface elevation={0} style={[styles.paddingVertical10, styles.paddingHorizontal15]}>
-                <View style={[styles.row, styles.middle]}>
+                <TouchableOpacity activeOpacity={0.2} style={[styles.row, styles.middle]} onPress={onPressWhatsapp}>
                     <View style={styles.grow}>
                         <View>
                             <View>
@@ -60,9 +60,9 @@ function CitaList({ agenda, cita }: { agenda: IAgenda, cita: ICita }) {
                         </View>
                     </View>
                     <View>
-                        <IconButton icon="whatsapp" iconColor={enable ? "green" : 'grey'} size={18} onPress={onPressWhatsapp} />
+                        <IconButton icon="whatsapp" iconColor={enable ? "green" : 'grey'} size={18} />
                     </View>
-                </View>
+                </TouchableOpacity>
             </Surface>
             <Divider style={styles.divider} />
         </View>

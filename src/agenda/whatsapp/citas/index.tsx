@@ -1,4 +1,4 @@
-import { FlatList, RefreshControl, View } from "react-native";
+import { FlatList, RefreshControl, ScrollView, View } from "react-native";
 import { ActivityIndicator, Text } from "react-native-paper";
 import styles from "../../../common/styles";
 import Appbar from "../container/appbar";
@@ -29,7 +29,7 @@ function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStac
     const renderCita = ({ item }: { item: ICita }) => <CitaList agenda={agenda} cita={item} />
 
     return (
-        <Appbar title={`${agenda.Nombre} - Citas`} onPressBack={onPressBack} onPressTitle={modal.onOpen} onPressProfile={onPressProfile}>
+        <Appbar title={agenda.Nombre} icon="home" onPressBack={onPressBack} onPressTitle={modal.onOpen} onPressProfile={onPressProfile}>
             {
                 (loading) ? (
                     <View style={[styles.grow, styles.center]}>
@@ -44,12 +44,16 @@ function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStac
                                     renderItem={renderCita}
                                     keyExtractor={(item: ICita) => item.idCita.toString()}
                                     ListHeaderComponent={renderHeader}
-                                    refreshControl={<RefreshControl refreshing={(citas.length && loading)} onRefresh={onUpdate} />}
+                                    refreshControl={<RefreshControl refreshing={!!(citas.length && loading)} onRefresh={onUpdate} />}
                                 />
                                 : (
-                                    <CitasNotFound>
-                                        {renderHeader}
-                                    </CitasNotFound>
+                                    <ScrollView
+                                      refreshControl={<RefreshControl refreshing={!!(citas.length && loading)} onRefresh={onUpdate} />}
+                                    >
+                                        <CitasNotFound>
+                                            {renderHeader}
+                                        </CitasNotFound>
+                                   </ScrollView>
                                 )
                         }
                     </View>
