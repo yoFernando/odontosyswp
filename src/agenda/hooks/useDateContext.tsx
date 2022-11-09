@@ -16,21 +16,26 @@ const getDefaultDates = () => {
 interface IDates {
     date: string,
     dates: string[],
-    onChangeDate: (d: string) => void
+    onChangeDate: (d: string) => void,
+    onRefreshDate: () => void
 }
 
 export const DateContext = createContext<IDates>({} as IDates);
 
 function DatesContainer(props: IChildren) {
-    const [dates] = useState(getDefaultDates)
+    const [dates, setDefaultDates] = useState(getDefaultDates)
     const [date, setDate] = useState(dates[0]);
 
     const onChangeDate = (newDate: string) => {
         setDate(newDate);
     }
 
+    const onRefreshDate = () => {
+        setDefaultDates(getDefaultDates);
+    }
+
     return (
-        <DateContext.Provider value={{ date, dates, onChangeDate }}>
+        <DateContext.Provider value={{ date, dates, onChangeDate, onRefreshDate }}>
             {props.children}
         </DateContext.Provider>
     )

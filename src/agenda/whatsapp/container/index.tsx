@@ -3,7 +3,7 @@ import { ActivityIndicator, List } from "react-native-paper";
 import Appbar from "./appbar";
 import styles from "../../../common/styles";
 import useAgendas, { IAgenda } from "../../hooks/useAgendas";
-import AgendaListItem from "./agendaList";
+import Agenda from "./item";
 import { IAgendaParamStack, URL } from "../../../navigation";
 
 function AgendaContainer({ navigation }: IAgendaParamStack) {
@@ -42,7 +42,7 @@ function AgendaContainer({ navigation }: IAgendaParamStack) {
           ) : (
             <List.Section>
               {agendas.map(agenda =>
-                <AgendaListItem agenda={agenda} key={agenda.idAgenda} onSelect={onSelectAgenda} />
+                <Agenda agenda={agenda} key={agenda.idAgenda} onSelect={onSelectAgenda} />
               )}
             </List.Section>
           )
