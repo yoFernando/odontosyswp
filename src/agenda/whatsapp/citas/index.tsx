@@ -11,12 +11,18 @@ import { IChildren } from './../../../common/types';
 import useOpen from './../../../common/hooks/useOpen';
 import AgendaModal from "./modal";
 import { IAgenda } from "../../hooks/useAgendas";
+import { CommonActions } from "@react-navigation/native";
 
 function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStack) {
     const { agenda, citas, loading, onUpdate } = useCitas(route.params);
     const modal = useOpen();
 
-    const onPressBack = () => navigation.goBack();
+    const onPressBack = () => navigation.dispatch(
+        CommonActions.reset({
+            index: 1,
+            routes: [{ name: URL.agenda }],
+        })
+    );
     const onPressProfile = () => navigation.navigate(URL.profile)
     const onSelectAgenda = (agenda: IAgenda) => navigation.push(URL.agenda_selected, agenda);
 
@@ -48,12 +54,12 @@ function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStac
                                 />
                                 : (
                                     <ScrollView
-                                      refreshControl={<RefreshControl refreshing={!!(citas.length && loading)} onRefresh={onUpdate} />}
+                                        refreshControl={<RefreshControl refreshing={!!(citas.length && loading)} onRefresh={onUpdate} />}
                                     >
                                         <CitasNotFound>
                                             {renderHeader}
                                         </CitasNotFound>
-                                   </ScrollView>
+                                    </ScrollView>
                                 )
                         }
                     </View>
