@@ -19,7 +19,9 @@
       "versionCode": 8,
       "package": "com.odontosyswp"
     },
-    "ios": {},
+    "ios": {
+      "bundleIdentifier": "com.odontosyswp"
+    },
     "updates": {
       "url": "https://u.expo.dev/ef164938-1bc8-4bfd-9f1a-eb4d9a27a278"
     }
