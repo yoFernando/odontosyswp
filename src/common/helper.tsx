@@ -1,6 +1,7 @@
 import { ICita } from "../agenda/hooks/useCitas";
 import { IUser } from "../auth/hooks/context";
-import Logo from '../assets/logo.png';
+import Logo from '../assets/fallback.jpeg';
+import { ImageSourcePropType } from "react-native";
 
 export const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 export const monthsShort = ['Ene.', 'Feb.', 'Mar.', 'Abr.', 'May.', 'Jun.', 'Jul.', 'Ago.', 'Sep.', 'Oct.', 'Nov.', 'Dic.']
@@ -14,11 +15,11 @@ export function getTrimedHour(hour: number) {
     return (hour < 1000 ? '0' + hour : '' + hour).split("")
 }
 
-export const formatAvatar = (user: IUser) => {
+export const formatAvatar = (user: IUser): ImageSourcePropType => {
     if (!user.fotoDePerfil) {
         return Logo
     }
-    return `http://proxy.odontosys.com/api/odontosys-resized.s3.us-east-2.amazonaws.com/${(""+user.idClinica).padStart(5, '0')}/fotoperfil.png`
+    return {uri:`http://proxy.odontosys.com/api/odontosys-resized.s3.us-east-2.amazonaws.com/${(""+user.idClinica).padStart(5, '0')}/fotoperfil.png`}
 }
 
 export enum IFormat {

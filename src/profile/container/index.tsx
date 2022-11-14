@@ -37,7 +37,7 @@ function ProfileContainer({ navigation }: IProfileParamStack) {
     <ProfileAppbar title="Perfil" onPressBack={onPressBack}>
       <View style={[styles.grow, styles.between]}>
         <View style={[styles.center, styles.paddingVertical20]}>
-          <Image source={{ uri: formatAvatar(user) }} style={imageStyle} />
+          <Image source={formatAvatar(user)} style={imageStyle} />
           <Text style={styles.paddingVertical15}>{user.nombre.split(':')[1] || user.nombre}</Text>
         </View>
         <View style={[styles.paddingHorizontal10, styles.paddingVertical20]}>

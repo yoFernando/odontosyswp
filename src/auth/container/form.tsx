@@ -3,7 +3,7 @@ import { Button, Text, TextInput as PaperInput } from "react-native-paper";
 import styles from "../../common/styles";
 import useOpen from './../../common/hooks/useOpen';
 
-import Logo from '../../assets/logo.png';
+import Logo from '../../assets/Icono-Odontosys-Mensajes.png';
 import { ILoginState } from ".";
 import InputError from "../../common/components/inputerror";
 import { useRef } from "react";
