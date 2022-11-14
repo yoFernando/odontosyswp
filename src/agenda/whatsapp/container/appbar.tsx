@@ -15,7 +15,7 @@ const AgendaWhatsappAppbar = (props: IAgendaAppbar) => (
     <View style={styles.grow}>
         <Appbar.Header mode="center-aligned" style={styles.bgPrimary}>
             <Appbar.Action icon={props.icon || "arrow-left"} color="white" onPress={props.onPressBack} />
-            <Appbar.Content title={props.title} color="white" mode="large" onPress={props.onPressTitle} />
+            <Appbar.Content title={props.title} color="white" onPress={props.onPressTitle} />
             <Appbar.Action icon="account" color="white" onPress={props.onPressProfile} />
         </Appbar.Header>
         <View style={styles.grow}>

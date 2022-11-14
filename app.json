@@ -2,11 +2,11 @@
   "expo": {
     "name": "Odontosys Mensajes",
     "slug": "odontosyswp",
-    "version": "1.9.0",
+    "version": "2.0.0",
     "sdkVersion": "45.0.0",
     "backgroundColor": "#014990",
     "primaryColor": "#014990",
-    "icon": "./src/assets/odontosys-mensajes.jpeg",
+    "icon": "./src/assets/odontosysmsglogo.png",
     "extra": {
       "eas": {
         "projectId": "ef164938-1bc8-4bfd-9f1a-eb4d9a27a278"
@@ -16,7 +16,7 @@
       "policy": "sdkVersion"
     },
     "android": {
-      "versionCode": 9,
+      "versionCode": 10,
       "package": "com.odontosyswp"
     },
     "ios": {

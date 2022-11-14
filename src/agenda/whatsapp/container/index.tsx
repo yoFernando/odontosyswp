@@ -1,13 +1,17 @@
-import { Alert, BackHandler, RefreshControl, ScrollView, View } from "react-native";
+import { Alert, BackHandler, Platform, RefreshControl, ScrollView, View } from "react-native";
 import { ActivityIndicator, List } from "react-native-paper";
 import Appbar from "./appbar";
 import styles from "../../../common/styles";
 import useAgendas, { IAgenda } from "../../hooks/useAgendas";
 import Agenda from "./item";
 import { IAgendaParamStack, URL } from "../../../navigation";
+import { CommonActions } from '@react-navigation/native';
+import { AuthContext } from "../../../auth/hooks/context";
+import { useContext } from "react";
 
 function AgendaContainer({ navigation }: IAgendaParamStack) {
   const { agendas, loading, onUpdate } = useAgendas();
+  const { onAuthChange } = useContext(AuthContext)
   const onSelectAgenda = (agenda: IAgenda) => navigation.push(URL.agenda_selected, agenda);
   const onPressProfile = () => navigation.navigate(URL.profile)
   const onPressBack = () => {
@@ -22,7 +26,14 @@ function AgendaContainer({ navigation }: IAgendaParamStack) {
         {
           text: "Salir",
           style: "destructive",
-          onPress: () => BackHandler.exitApp()
+          onPress: () => {
+            if (Platform.OS === "android") {
+              BackHandler.exitApp()
+            } else {
+              navigation.dispatch((state) => CommonActions.reset({ ...state, index: 0 }))
+              onAuthChange();
+            }
+          }
         }
       ]
     )
