@@ -18,7 +18,7 @@ export default function useAgendas() {
     const { data, error } = useSWR<IAgenda[]>(APIUrls.agendas, Fetch<IAgenda[]>)
     const onUpdate = () => mutate(APIUrls.agendas)
     return {
-        agendas: data,
+        agendas: data && data.filter(item => item.Visible),
         loading: !data,
         error,
         onUpdate
