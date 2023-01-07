@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
     grow: {
         flexGrow: 1,
     },
+    w100: {
+        width: '100%',
+    },
     h100: {
         height: '100%',
     },

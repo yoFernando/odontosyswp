@@ -1,8 +1,9 @@
 import React from 'react';
 import { List, Divider } from 'react-native-paper';
 import Modal from '../../../common/components/modal';
-import useAgendas, { IAgenda } from '../../hooks/useAgendas';
+import useAgendas from '../../hooks/useAgendas';
 import Agenda from '../container/item';
+import { IAgenda } from '../../types';
 
 interface IAgendaModal {
     open: boolean,

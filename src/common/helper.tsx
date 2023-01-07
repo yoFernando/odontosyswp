@@ -29,6 +29,7 @@ export enum IFormat {
 }
 
 const formatter = {
+    [IFormat["MONTH"]]: (date: Date) => months[date.getMonth()],
     [IFormat["DAY/MONTH"]]: (date: Date) => `${weekShort[date.getDay()]} ${formatZero(date.getDate())} de ${months[date.getMonth()]}`,
     [IFormat['YY/MM/DD']]: (date: Date) => `${formatZero(date.getFullYear())}/${formatZero(+date.getMonth() + 1)}/${formatZero(date.getDate())}`,
     [IFormat['DD/MM/YY']]: (date: Date) => `${formatZero(date.getDate())}/${formatZero(+date.getMonth() + 1)}/${formatZero(date.getFullYear())}`,
@@ -36,8 +37,8 @@ const formatter = {
 
 export const formatZero = (n: number): string => n <= 9 ? '0' + n : "" + n
 
-export const format = (datetime: string, format: IFormat): string => {
-    return formatter[format](getTrimedDate(datetime));
+export const format = (datetime: string | Date, format: IFormat): string => {
+    return formatter[format](typeof datetime === "string" ? getTrimedDate(datetime) : datetime);
 }
 
 function getHoursAndMinutes(hour: number) {
@@ -66,6 +67,19 @@ export const formatHour = (hour: number, cutted: boolean = false) => {
     let time = getTrimedHour(hour)
     const hours = `${time[0]}${time[1]}`;
     return `${hours}:${time[2]}${time[3]}${cutted ? '' : parseInt(hours) > 11 ? 'pm' : 'am'}`
+}
+
+export const getNextBirth = (date: Date | string): number => {
+    const birthDate = typeof date === "string" ? getTrimedDate(date) : date;
+    const today = new Date();
+    
+    let age = today.getFullYear() - birthDate.getFullYear();
+    let m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+
+    return age + 1;
 }
 
 export enum areaCodes {

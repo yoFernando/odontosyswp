@@ -6,9 +6,11 @@ import {
 
 // Route Container
 import AgendaContainer from '../agenda/whatsapp/container/';
-import CitasContainer from '../agenda/whatsapp/citas/'
+import CitasContainer from '../agenda/whatsapp/citas/';
 import LoginContainer from '../auth/container/';
-import ProfileContainer from '../profile/container/'
+import ProfileContainer from '../profile/container/';
+import ModulesContainer from '../modules/container/';
+import BirthdayContainer from '../birthday/container/';
 
 // URL Stack
 import { URL, IRootStackType } from './index';
@@ -29,7 +31,9 @@ function StackAuthNavigationContainer() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }} initialRouteName={URL.agenda}>
+        <Stack.Navigator screenOptions={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }} initialRouteName={URL.modules}>
+          <Stack.Screen name={URL.modules} component={ModulesContainer} options={defaultOptions} />
+          <Stack.Screen name={URL.birthday} component={BirthdayContainer} options={defaultOptions} />
           <Stack.Screen name={URL.agenda} component={AgendaContainer} options={defaultOptions} />
           <Stack.Screen name={URL.agenda_selected} component={CitasContainer} options={defaultOptions} />
           <Stack.Screen name={URL.profile} component={ProfileContainer} options={defaultOptions} />

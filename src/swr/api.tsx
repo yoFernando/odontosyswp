@@ -1,10 +1,11 @@
-export const BASE_URL = 'https://appbackend.odontosys.com/api/v1'
-// export const BASE_URL = 'http://192.168.1.6:5000/api/v1'
+// export const BASE_URL = 'https://appbackend.odontosys.com/api/v1'
+export const BASE_URL = 'http://10.0.0.6:5000/api/v1'
 
 enum APIUrls {
     login = `auth/login`,
     agendas = `agendas`,
-    citas = `citas/$agenda/$year/$month/$day`
+    citas = `citas/$agenda/$year/$month/$day`,
+    cumple = `paciente/cumple/$month`
 }
 
 export function assign(uri: string, params: string[], values: string[]) {

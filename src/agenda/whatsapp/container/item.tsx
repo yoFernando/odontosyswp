@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { Divider, List } from "react-native-paper";
 import styles, { intToColor } from "../../../common/styles";
-import { IAgenda } from "../../hooks/useAgendas";
+import { IAgenda } from "../../types";
 
 interface IAgendaItem {
     agenda: IAgenda,

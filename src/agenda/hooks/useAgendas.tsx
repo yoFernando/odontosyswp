@@ -1,17 +1,7 @@
 import useSWR, { useSWRConfig } from "swr";
 import APIUrls from "../../swr/api";
 import Fetch from "../../swr/fetch";
-
-export interface IAgenda {
-    Nombre: string,
-    Visible: boolean,
-    Color: number,
-    idAgenda: number,
-    idClinica: number
-    DuracionCita: number,
-    TicksUltimaSincronizacion: number,
-    TicksUltimoCambioPush: number,
-}
+import { IAgenda } from "../types";
 
 export default function useAgendas() {
     const { mutate } = useSWRConfig();

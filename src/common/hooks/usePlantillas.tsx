@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import AxiosClient from '../../swr/axios';
-import { assign } from './../../swr/api';
+import { assign } from '../../swr/api';
 
 interface IPlantilla {
     plantilla?: string

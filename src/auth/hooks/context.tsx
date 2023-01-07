@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IChildren } from './../../common/types';
 import { assignToken, unassingToken } from './../../swr/axios';
+import { Alert, Platform, BackHandler } from "react-native";
 
 const AUTH_SESSION = 'AUTH_USER_STORE';
 
@@ -22,6 +23,11 @@ export interface IUser {
     MostrarDoctoresComoGrupo: boolean,
 }
 
+interface stack {
+    cb: () => void;
+}
+type callback = stack['cb'];
+
 interface IAuthState {
     user?: IUser,
     loading: boolean,
@@ -29,10 +35,17 @@ interface IAuthState {
 }
 
 interface IAuth extends IAuthState {
-    onAuthChange: (auth?: IAuthState) => void
+    onAuthChange: (auth?: IAuthState) => void,
+    onAuthExit: (cb: callback) => void,
 }
 
-export const AuthContext = createContext<IAuth>({ user: undefined, loading: true, token: '', onAuthChange: (_auth?: IAuthState) => { } });
+export const AuthContext = createContext<IAuth>({
+    user: undefined,
+    loading: true,
+    token: '',
+    onAuthChange: (_auth?: IAuthState) => { },
+    onAuthExit: (cb: callback) => { }
+});
 
 function AuthContextContainer(props: IChildren) {
     const [state, setState] = useState<IAuthState>({ user: undefined, loading: true, token: '' })
@@ -61,8 +74,33 @@ function AuthContextContainer(props: IChildren) {
         });
     }
 
+    const onAuthExit = (callback: callback) => {
+        Alert.alert(
+            'Salir',
+            '¿Está seguro de que desea salir?',
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                {
+                    text: "Salir",
+                    style: "destructive",
+                    onPress: () => {
+                        if (Platform.OS === "android") {
+                            BackHandler.exitApp();
+                        } else {
+                            callback();
+                            onAuthChange();
+                        }
+                    }
+                }
+            ]
+        )
+    }
+
     return (
-        <AuthContext.Provider value={{ ...state, onAuthChange }}>
+        <AuthContext.Provider value={{ ...state, onAuthChange, onAuthExit }}>
             {props.children}
         </AuthContext.Provider>
     );

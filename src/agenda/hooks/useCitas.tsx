@@ -1,38 +1,11 @@
 import { useContext } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import APIUrls, { assign } from "../../swr/api";
-import { IAgenda } from "./useAgendas";
+import { IAgenda, ICita } from "../types";
 import { DateContext } from './useDateContext';
 import Axios from "../../swr/axios";
 import { removeAllDates } from "../../auth/hooks/context";
 
-export interface IPaciente {
-    "idClinica": number,
-    "idPaciente": number,
-    "idEstadoPersonalizado": number,
-    "MedioDeComunicacion": number,
-    "nombre": string,
-    "movilDeEnvio": string,
-    "telefonoParaMostrar": string,
-    "tieneAlertaPorCuestionario": boolean
-}
-export interface ICita {
-    "ColorDeFondo": number,
-    "Concurrio": number,
-    "Confirmada": number,
-    "Duracion": number,
-    "Hora": number,
-    "Fecha": string,
-    "InfoExtra": string,
-    "Nota": string,
-    "TicksFechaUpdated": number,
-    "TipoDeCita": number
-    "idAgenda": number
-    "idCita": number
-    "idClinica": number
-    "idPaciente": number
-    "paciente": null | IPaciente
-}
 interface ICitas {
     [key: string]: ICita[]
 }
