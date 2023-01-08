@@ -6,6 +6,7 @@ import { ImageSourcePropType } from "react-native";
 export const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 export const monthsShort = ['Ene.', 'Feb.', 'Mar.', 'Abr.', 'May.', 'Jun.', 'Jul.', 'Ago.', 'Sep.', 'Oct.', 'Nov.', 'Dic.']
 export const week = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+export const years = [2023, 2022, 2021];
 export const weekShort = ['Dom.', 'Lun.', 'Mar.', 'Mie.', 'Jue.', 'Vie.', 'Sab.'];
 
 export function getTrimedDate(date: string) {
@@ -23,13 +24,18 @@ export const formatAvatar = (user: IUser): ImageSourcePropType => {
 }
 
 export enum IFormat {
+    'BIRTHDAY',
     'DAY/MONTH',
     'YY/MM/DD',
     'DD/MM/YY',
 }
 
 const formatter = {
-    [IFormat["MONTH"]]: (date: Date) => months[date.getMonth()],
+    [IFormat["BIRTHDAY"]]: (date: Date) => {
+        const time = new Date();
+        time.setDate(date.getDate())
+        return `${week[date.getDay()]} ${+formatZero(time.getDate())}`
+    },
     [IFormat["DAY/MONTH"]]: (date: Date) => `${weekShort[date.getDay()]} ${formatZero(date.getDate())} de ${months[date.getMonth()]}`,
     [IFormat['YY/MM/DD']]: (date: Date) => `${formatZero(date.getFullYear())}/${formatZero(+date.getMonth() + 1)}/${formatZero(date.getDate())}`,
     [IFormat['DD/MM/YY']]: (date: Date) => `${formatZero(date.getDate())}/${formatZero(+date.getMonth() + 1)}/${formatZero(date.getFullYear())}`,

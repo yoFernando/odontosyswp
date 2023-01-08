@@ -11,6 +11,7 @@ export const SWRConfigContainer = (props: IChildren) => {
     return (
         <SWRConfig
             value={{
+                revalidateOnFocus: false,
                 provider: () => new Map(),
                 onError(err) {
                     try {

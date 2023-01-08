@@ -1,31 +1,24 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { ActivityIndicator, FlatList, ScrollView, View, RefreshControl } from 'react-native';
 import styles from '../../common/styles';
 import { IControlParamStack } from '../../navigation/stack';
 import useControl from '../hooks/useControl';
-// import List from './list';
+import List from './list';
 import Appbar from './../../common/components/appbar';
-import MonthPicker from 'react-native-month-year-picker';
 import { CommonActions } from '@react-navigation/native';
 import { URL } from '../../navigation';
 import { IControl } from './../types';
-import useOpen from './../../common/hooks/useOpen';
-import { format, IFormat } from '../../common/helper';
-import { Button } from 'react-native-paper';
+import YearPicker from './../../common/components/pickers/year';
+import MonthPicker from './../../common/components/pickers/month';
+import { IDate } from '../../common/types';
+import { Checkbox, Text } from 'react-native-paper';
 
 function ControlContainer({ navigation }: IControlParamStack) {
-    const [month, setMonth] = useState(new Date());
-    const { data, loading, onUpdate } = useControl(month);
-    const picker = useOpen();
+    const [date, setDate] = useState<IDate>(() => { const d = new Date(); return { month: d.getMonth(), year: d.getFullYear() } })
+    const { data, checked, loading, onChangeChecked, onUpdate } = useControl(date);
 
-    const onValueChange = useCallback(
-        (_event: any, newDate?: Date) => {
+    const onChangeDate = (key: keyof IDate) => (value: number) => setDate(oldState => ({ ...oldState, [key]: value }))
 
-            picker.onClose();
-            setMonth(newDate || month);
-        },
-        [month, picker],
-    )
     const onPressProfile = () => navigation.navigate(URL.profile)
     const onPressBack = () => navigation.dispatch(
         CommonActions.reset({ index: 1, routes: [{ name: URL.modules }] })
@@ -33,16 +26,24 @@ function ControlContainer({ navigation }: IControlParamStack) {
 
     const renderHeader = (
         <View style={styles.paddingVertical15}>
-            {/* <MonthPicker month={month} onChangeMonth={setMonth} /> */}
-            <Button icon="chevron-down" onPress={picker.onOpen}>
-                {format(month, IFormat['DD/MM/YYYY'])}
-            </Button>
-            {picker.open && (
-                <MonthPicker onChange={onValueChange} value={month} okButton="Aceptar" />
-            )}
+            <View style={[styles.row, styles.grow, styles.center]}>
+                <View style={styles.grow}>
+                    <MonthPicker month={date.month} onChangeMonth={onChangeDate('month')} />
+                </View>
+                <View style={styles.grow}>
+                    <YearPicker year={date.year} onChangeYear={onChangeDate('year')} />
+                </View>
+            </View>
+            <View style={[styles.row, styles.grow, styles.center]}>
+                <Checkbox
+                    status={checked ? 'checked' : 'unchecked'}
+                    onPress={onChangeChecked}
+                />
+                <Text>Ver los controles anteriores</Text>
+            </View>
         </View>
     )
-    const renderPaciente = ({ item }: { item: IControl }) => <View /> // <List paciente={item} />
+    const renderPaciente = ({ item }: { item: IControl }) => <List control={item} />
     return (
         <Appbar title="Recordatorio de Control" onPressStartIcon={onPressBack} onPressEndIcon={onPressProfile}>
             {
@@ -65,8 +66,8 @@ function ControlContainer({ navigation }: IControlParamStack) {
                                     <ScrollView
                                         refreshControl={<RefreshControl refreshing={(data.length && loading)} onRefresh={onUpdate} />}
                                     >
+                                        {renderHeader}
                                         {/* <CitasNotFound>
-                                            {renderHeader}
                                         </CitasNotFound> */}
                                     </ScrollView>
                                 )

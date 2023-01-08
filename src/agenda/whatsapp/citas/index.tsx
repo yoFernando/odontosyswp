@@ -32,7 +32,7 @@ function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStac
     const renderCita = ({ item }: { item: ICita }) => <List agenda={agenda} cita={item} />
 
     return (
-        <Appbar title={agenda.Nombre} icon="home" onPressBack={onPressBack} onPressTitle={modal.onOpen} onPressProfile={onPressProfile}>
+        <Appbar title={agenda.Nombre} onPressBack={onPressBack} onPressTitle={modal.onOpen} onPressProfile={onPressProfile}>
             {
                 (loading) ? (
                     <View style={[styles.grow, styles.center]}>

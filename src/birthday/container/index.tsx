@@ -18,7 +18,7 @@ function BirthdayContainer({ navigation }: IBirthdayParamStack) {
     const onPressBack = () => navigation.dispatch(
         CommonActions.reset({ index: 1, routes: [{ name: URL.modules }] })
     )
-    
+
     const renderHeader = (
         <View style={styles.paddingVertical15}>
             <MonthPicker month={month} onChangeMonth={setMonth} />
@@ -47,8 +47,8 @@ function BirthdayContainer({ navigation }: IBirthdayParamStack) {
                                     <ScrollView
                                         refreshControl={<RefreshControl refreshing={(data.length && loading)} onRefresh={onUpdate} />}
                                     >
+                                        {renderHeader}
                                         {/* <CitasNotFound>
-                                            {renderHeader}
                                         </CitasNotFound> */}
                                     </ScrollView>
                                 )

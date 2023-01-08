@@ -8,25 +8,19 @@ import { SnackbarContext } from '../../paper/snackbar/context';
 import { format, getNextBirth, getPhone, areaCodes, IFormat } from "../../common/helper";
 import { extract } from './../../swr/axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { IPaciente } from '../types';
+import { IControl } from './../types';
 
-const getId = (paciente: IPaciente) => `cumple/paciente/${paciente.idPaciente}/clinica/${paciente.idClinica}`;
+const getId = (control: IControl) => `control/${control.id}/paciente/${control.idPaciente}`;
 
-// { "idPlantilla": 0, "label": "Saludo de Cumpleaños" },
-// { "idPlantilla": 1, "label": "Recordatorio de Cita" },
-// { "idPlantilla": 2, "label": "Recordatorio de Control" },
-// { "idPlantilla": 6, "label": "Aviso Paciente Sin Cita" },
-// { "idPlantilla": 3, "label": "Aviso de Deuda" }
-
-function PacienteList({ paciente }: { paciente: IPaciente }) {
+function ControlPacienteList({ control }: { control: IControl }) {
     const { onOpenSnack } = useContext(SnackbarContext)
-    const plantillas = usePlantillaWhatsapp(0);
+    const plantillas = usePlantillaWhatsapp(2);
     const user = useAuth();
 
     const [enable, setEnable] = useState(true);
 
     useEffect(() => {
-        AsyncStorage.getItem(getId(paciente), function (_error, result) {
+        AsyncStorage.getItem(getId(control), function (_error, result) {
             if (result && (JSON.parse(result) === true)) {
                 setEnable(false);
             }
@@ -35,9 +29,9 @@ function PacienteList({ paciente }: { paciente: IPaciente }) {
 
     const onPressWhatsapp = () => {
         setEnable(false);
-        const phone = getPhone(paciente.movilDeEnvio, areaCodes[user.pais])
-        AsyncStorage.setItem(getId(paciente), "true", () => { })
-        plantillas.get(paciente.idPaciente)
+        const phone = getPhone(control.telefono, areaCodes[user.pais])
+        AsyncStorage.setItem(getId(control), "true", () => { })
+        plantillas.get(control.idPaciente)
             .then(message => Linking.openURL(`https://wa.me/${phone}?text=${encodeURI(message)}`))
             .catch(extract(onOpenSnack))
     }
@@ -48,10 +42,10 @@ function PacienteList({ paciente }: { paciente: IPaciente }) {
                     <View style={styles.grow}>
                         <View>
                             <View>
-                                <Text>{format(paciente.fechaNacimiento, IFormat["BIRTHDAY"])} (🎂{getNextBirth(paciente.fechaNacimiento)} años)</Text>
+                                <Text>{control.nota}</Text>
                             </View>
                             <Text style={[styles.grow, styles.shrink, styles.justify, styles.bold]} ellipsizeMode="middle">
-                                {paciente.nombre}
+                                {control.nombre}
                             </Text>
                         </View>
                     </View>
@@ -65,4 +59,4 @@ function PacienteList({ paciente }: { paciente: IPaciente }) {
     );
 }
 
-export default PacienteList;
+export default ControlPacienteList;
