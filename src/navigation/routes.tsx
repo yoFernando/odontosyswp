@@ -3,6 +3,7 @@ enum URL {
     agenda = 'agenda',
     agenda_selected = 'agenda_selected',
     birthday = 'birthday',
+    control = 'control',
     profile = 'profile',
 }
 

@@ -23,7 +23,7 @@ function ModulesContainer({ navigation }: IModulesParamStack) {
                     <Button mode="contained" icon="cake-variant" uppercase onPress={onNavigate(URL.birthday)}>Saludo de cumpleaÑos</Button>
                 </View>
                 <View style={[styles.paddingVertical20, styles.paddingHorizontal20, styles.w100]}>
-                    <Button mode="contained" icon="clipboard-account-outline" uppercase disabled onPress={onNavigate(URL.agenda)}>Recordatorio de control</Button>
+                    <Button mode="contained" icon="clipboard-account-outline" uppercase onPress={onNavigate(URL.control)}>Recordatorio de control</Button>
                 </View>
                 <View style={[styles.paddingVertical20, styles.paddingHorizontal20, styles.w100]}>
                     <Button mode="contained" icon="wallet" uppercase disabled onPress={onNavigate(URL.agenda)}>Aviso de deuda</Button>
