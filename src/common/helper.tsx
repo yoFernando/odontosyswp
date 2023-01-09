@@ -85,7 +85,7 @@ export const getNextBirth = (date: Date | string): number => {
         age--;
     }
 
-    return age + 1;
+    return age;
 }
 
 export enum areaCodes {

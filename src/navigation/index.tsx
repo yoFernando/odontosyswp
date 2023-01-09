@@ -1,4 +1,4 @@
-import { IRootStackType, IProfileParamStack, IAgendaSelectedParamStack, IAgendaParamStack } from "./stack";
+import type { IRootStackType, IProfileParamStack, IAgendaSelectedParamStack, IAgendaParamStack } from "./stack";
 import URL from "./routes";
 
 export {

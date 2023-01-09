@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ActivityIndicator, FlatList, ScrollView, View, RefreshControl } from 'react-native';
+import { ActivityIndicator, FlatList, ScrollView, View, RefreshControl, Image } from 'react-native';
 import styles from '../../common/styles';
 import { URL } from '../../navigation';
 import { IBirthdayParamStack } from '../../navigation/stack';
@@ -9,6 +9,8 @@ import List from './list';
 import Appbar from './../../common/components/appbar';
 import MonthPicker from './../../common/components/pickers/month';
 import { CommonActions } from '@react-navigation/native';
+import { months } from '../../common/helper';
+import NotFound from '../../common/components/notfound';
 
 function BirthdayContainer({ navigation }: IBirthdayParamStack) {
     const [month, setMonth] = useState(new Date().getMonth());
@@ -47,9 +49,12 @@ function BirthdayContainer({ navigation }: IBirthdayParamStack) {
                                     <ScrollView
                                         refreshControl={<RefreshControl refreshing={(data.length && loading)} onRefresh={onUpdate} />}
                                     >
-                                        {renderHeader}
-                                        {/* <CitasNotFound>
-                                        </CitasNotFound> */}
+                                        <NotFound
+                                            header={renderHeader}
+                                            message={`Sin cumpleaños en ${months[month]}`}
+                                        >
+                                            <Image source={require("../../assets/undraw_party.png")} style={{ height: 134, width: 191, marginTop: 50 }} />
+                                        </NotFound>
                                     </ScrollView>
                                 )
                         }

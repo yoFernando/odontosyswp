@@ -1,17 +1,16 @@
-import { FlatList, RefreshControl, ScrollView, View } from "react-native";
-import { ActivityIndicator, Text } from "react-native-paper";
+import { FlatList, RefreshControl, ScrollView, View, Image } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
+import { CommonActions } from "@react-navigation/native";
 import styles from "../../../common/styles";
 import Appbar from "../container/appbar";
 import useCitas from "../../hooks/useCitas";
 import Selector from "./selector";
 import List from "./list";
-// import ImageNotFound from '../../../assets/undraw_doctors_hwty.svg';
 import { URL, IAgendaSelectedParamStack } from "../../../navigation";
-import { IChildren } from './../../../common/types';
 import useOpen from './../../../common/hooks/useOpen';
 import AgendaModal from "./modal";
-import { CommonActions } from "@react-navigation/native";
 import { IAgenda, ICita } from './../../types';
+import NotFound from "../../../common/components/notfound";
 
 function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStack) {
     const { agenda, citas, loading, onUpdate } = useCitas(route.params);
@@ -53,9 +52,12 @@ function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStac
                                     <ScrollView
                                         refreshControl={<RefreshControl refreshing={!!(citas.length && loading)} onRefresh={onUpdate} />}
                                     >
-                                        <CitasNotFound>
-                                            {renderHeader}
-                                        </CitasNotFound>
+                                        <NotFound
+                                            header={renderHeader}
+                                            message="No tiene citas para este día"
+                                        >
+                                            <Image source={require("../../../assets/undraw_medicine.png")} style={{ height: 195.75, width: 275, marginTop: 50 }} />
+                                        </NotFound>
                                     </ScrollView>
                                 )
                         }
@@ -71,19 +73,5 @@ function AgendaSelectedContainer({ route, navigation }: IAgendaSelectedParamStac
         </Appbar>
     );
 }
-
-const CitasNotFound = (props: IChildren) => (
-    <View>
-        {props.children}
-        <View style={[styles.h100, styles.center]}>
-            <View>
-                {/* <ImageNotFound width={300} height={200} /> */}
-            </View>
-            <View style={styles.paddingVertical20}>
-                <Text style={styles.bold}>No tiene citas para este día</Text>
-            </View>
-        </View>
-    </View>
-)
 
 export default AgendaSelectedContainer;

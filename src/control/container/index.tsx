@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ActivityIndicator, FlatList, ScrollView, View, RefreshControl } from 'react-native';
+import { ActivityIndicator, FlatList, ScrollView, View, Image, RefreshControl } from 'react-native';
 import styles from '../../common/styles';
 import { IControlParamStack } from '../../navigation/stack';
 import useControl from '../hooks/useControl';
@@ -12,6 +12,8 @@ import YearPicker from './../../common/components/pickers/year';
 import MonthPicker from './../../common/components/pickers/month';
 import { IDate } from '../../common/types';
 import { Checkbox, Text } from 'react-native-paper';
+import NotFound from '../../common/components/notfound';
+import { months } from './../../common/helper';
 
 function ControlContainer({ navigation }: IControlParamStack) {
     const [date, setDate] = useState<IDate>(() => { const d = new Date(); return { month: d.getMonth(), year: d.getFullYear() } })
@@ -34,7 +36,7 @@ function ControlContainer({ navigation }: IControlParamStack) {
                     <YearPicker year={date.year} onChangeYear={onChangeDate('year')} />
                 </View>
             </View>
-            <View style={[styles.row, styles.grow, styles.center]}>
+            <View style={[styles.row, styles.grow, styles.center, styles.paddingVertical5]}>
                 <Checkbox
                     status={checked ? 'checked' : 'unchecked'}
                     onPress={onChangeChecked}
@@ -66,9 +68,12 @@ function ControlContainer({ navigation }: IControlParamStack) {
                                     <ScrollView
                                         refreshControl={<RefreshControl refreshing={(data.length && loading)} onRefresh={onUpdate} />}
                                     >
-                                        {renderHeader}
-                                        {/* <CitasNotFound>
-                                        </CitasNotFound> */}
+                                        <NotFound
+                                            header={renderHeader}
+                                            message={`Sin resultados para ${months[date.month]} de ${date.year}`}
+                                        >
+                                            <Image source={require("../../assets/undraw_spreadsheet.png")} style={{ height: 134, width: 191, marginTop: 50 }} />
+                                        </NotFound>
                                     </ScrollView>
                                 )
                         }

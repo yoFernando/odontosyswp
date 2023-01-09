@@ -32,7 +32,7 @@ function StackAuthNavigationContainer() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }} initialRouteName={URL.control}>
+        <Stack.Navigator screenOptions={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }} initialRouteName={URL.birthday}>
           <Stack.Screen name={URL.modules} component={ModulesContainer} options={defaultOptions} />
           <Stack.Screen name={URL.birthday} component={BirthdayContainer} options={defaultOptions} />
           <Stack.Screen name={URL.control} component={ControlContainer} options={defaultOptions} />
