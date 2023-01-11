@@ -6,3 +6,7 @@ export interface IDate {
     month: number,
     year: number
 }
+export interface IOption {
+    value: number,
+    label: string
+}

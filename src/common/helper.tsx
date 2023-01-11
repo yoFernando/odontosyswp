@@ -16,11 +16,12 @@ export function getTrimedHour(hour: number) {
     return (hour < 1000 ? '0' + hour : '' + hour).split("")
 }
 
+export const formatCurrency = (num: number, decimals: number = 2) => Number(num).toLocaleString('de-DE', { minimumFractionDigits: decimals })
 export const formatAvatar = (user: IUser): ImageSourcePropType => {
     if (!user.fotoDePerfil) {
         return Logo
     }
-    return {uri:`http://proxy.odontosys.com/api/odontosys-resized.s3.us-east-2.amazonaws.com/${(""+user.idClinica).padStart(5, '0')}/fotoperfil.png`}
+    return { uri: `http://proxy.odontosys.com/api/odontosys-resized.s3.us-east-2.amazonaws.com/${("" + user.idClinica).padStart(5, '0')}/fotoperfil.png` }
 }
 
 export enum IFormat {
@@ -78,7 +79,7 @@ export const formatHour = (hour: number, cutted: boolean = false) => {
 export const getNextBirth = (date: Date | string): number => {
     const birthDate = typeof date === "string" ? getTrimedDate(date) : date;
     const today = new Date();
-    
+
     let age = today.getFullYear() - birthDate.getFullYear();
     let m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {

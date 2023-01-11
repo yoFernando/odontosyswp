@@ -6,7 +6,8 @@ enum APIUrls {
     agendas = `agendas`,
     citas = `citas/$agenda/$year/$month/$day`,
     cumple = `paciente/cumple/$month`,
-    control = `control`
+    control = `control`,
+    monedas = `monedas`
 }
 
 export function assign(uri: string, params: string[], values: string[]) {

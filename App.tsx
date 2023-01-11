@@ -6,6 +6,7 @@ import DatesContextContainer from './src/agenda/hooks/useDateContext';
 import StackNavigationContainer from './src/navigation/container';
 import PaperAppContainer, { Theme } from './src/paper/config';
 import { SWRConfigContainer } from './src/swr/config';
+import MonedasContextContainer from './src/monedas/hooks/context';
 
 function App() {
   return (
@@ -13,9 +14,11 @@ function App() {
       <AuthContextContainer>
         <SWRConfigContainer>
           <ExpoStatusBar animated style="light" backgroundColor={Theme.colors.primary} />
-          <DatesContextContainer>
-            <StackNavigationContainer />
-          </DatesContextContainer>
+          <MonedasContextContainer>
+            <DatesContextContainer>
+              <StackNavigationContainer />
+            </DatesContextContainer>
+          </MonedasContextContainer>
         </SWRConfigContainer>
       </AuthContextContainer>
     </PaperAppContainer>

@@ -8,7 +8,8 @@ export type IRootStackType = {
     [URL.agenda_selected]: IAgenda,
     [URL.profile]: undefined,
     [URL.birthday]: undefined,
-    [URL.control]: undefined
+    [URL.control]: undefined,
+    [URL.deuda]: undefined
 };
 
 export type IModulesParamStack = NativeStackScreenProps<IRootStackType, URL.modules>
@@ -16,4 +17,5 @@ export type IProfileParamStack = NativeStackScreenProps<IRootStackType, URL.prof
 export type IBirthdayParamStack = NativeStackScreenProps<IRootStackType, URL.birthday>
 export type IAgendaParamStack = NativeStackScreenProps<IRootStackType, URL.agenda>
 export type IControlParamStack = NativeStackScreenProps<IRootStackType, URL.control>
+export type IDeudaParamStack = NativeStackScreenProps<IRootStackType, URL.deuda>
 export type IAgendaSelectedParamStack = NativeStackScreenProps<IRootStackType, URL.agenda_selected>

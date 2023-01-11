@@ -5,7 +5,7 @@ import Fetch from './../../swr/fetch';
 
 const Fetcher = async (uri: string) => {
     const pacientes = await Fetch<IPaciente[]>(uri);
-    return [] //pacientes.sort((a, b) => (+a.fechaCumpleaños) - (+b.fechaCumpleaños))
+    return pacientes.sort((a, b) => (+a.fechaCumpleaños) - (+b.fechaCumpleaños))
 }
 
 export default function useBirthday(month: number) {

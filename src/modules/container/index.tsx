@@ -7,9 +7,11 @@ import Appbar from "../../common/components/appbar";
 import styles from '../../common/styles';
 import { URL } from "../../navigation";
 import { IModulesParamStack } from "../../navigation/stack";
+import { MonedasContext } from './../../monedas/hooks/context';
 
 function ModulesContainer({ navigation }: IModulesParamStack) {
     const { onAuthExit } = useContext(AuthContext);
+    const monedas = useContext(MonedasContext);
     const onPressProfile = () => navigation.navigate(URL.profile)
     const onPressBack = () => onAuthExit(() => navigation.dispatch((state) => CommonActions.reset({ ...state, index: 0 })))
     const onNavigate = (url: URL) => () => navigation.navigate(url);
@@ -26,7 +28,7 @@ function ModulesContainer({ navigation }: IModulesParamStack) {
                     <Button mode="contained" icon="clipboard-account-outline" uppercase onPress={onNavigate(URL.control)}>Recordatorio de control</Button>
                 </View>
                 <View style={[styles.paddingVertical20, styles.paddingHorizontal20, styles.w100]}>
-                    <Button mode="contained" icon="wallet" uppercase disabled onPress={onNavigate(URL.agenda)}>Aviso de deuda</Button>
+                    <Button mode="contained" icon="wallet" loading={!monedas} disabled={!monedas} uppercase onPress={onNavigate(URL.deuda)}>Aviso de deuda</Button>
                 </View>
                 <View style={[styles.paddingVertical20, styles.paddingHorizontal20, styles.w100]}>
                     <Button mode="contained" icon="calendar-check" uppercase disabled onPress={onNavigate(URL.agenda)}>Reagendar Cita</Button>

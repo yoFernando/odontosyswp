@@ -5,14 +5,16 @@ import styles from "../../common/styles";
 import useAuth from './../../auth/hooks/useAuth';
 import usePlantillaWhatsapp from "../../common/hooks/usePlantillas";
 import { SnackbarContext } from '../../paper/snackbar/context';
-import { getPhone, areaCodes } from "../../common/helper";
+import { getPhone, areaCodes, formatCurrency, IFormat } from "../../common/helper";
 import { extract } from './../../swr/axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { IControl } from './../types';
+import { IDeuda } from '../types';
+import { IMoneda } from '../../monedas/types';
+import { format } from './../../common/helper';
 
-const getId = (control: IControl) => `control/${control.id}/paciente/${control.idPaciente}`;
+const getId = (paciente: IDeuda) => `deuda/paciente/${paciente.idPaciente}`;
 
-function ControlPacienteList({ control }: { control: IControl }) {
+function DeudoresList({ paciente, moneda }: { paciente: IDeuda, moneda: IMoneda }) {
     const { onOpenSnack } = useContext(SnackbarContext)
     const plantillas = usePlantillaWhatsapp(2);
     const user = useAuth();
@@ -20,7 +22,7 @@ function ControlPacienteList({ control }: { control: IControl }) {
     const [enable, setEnable] = useState(true);
 
     useEffect(() => {
-        AsyncStorage.getItem(getId(control), function (_error, result) {
+        AsyncStorage.getItem(getId(paciente), function (_error, result) {
             if (result && (JSON.parse(result) === true)) {
                 setEnable(false);
             }
@@ -29,9 +31,9 @@ function ControlPacienteList({ control }: { control: IControl }) {
 
     const onPressWhatsapp = () => {
         setEnable(false);
-        const phone = getPhone(control.telefono, areaCodes[user.pais])
-        AsyncStorage.setItem(getId(control), "true", () => { })
-        plantillas.get(control.idPaciente)
+        const phone = getPhone(paciente.movilDeEnvio, areaCodes[user.pais])
+        AsyncStorage.setItem(getId(paciente), "true", () => { })
+        plantillas.get(paciente.idPaciente)
             .then(message => Linking.openURL(`https://wa.me/${phone}?text=${encodeURI(message)}`))
             .catch(extract(onOpenSnack))
     }
@@ -41,12 +43,12 @@ function ControlPacienteList({ control }: { control: IControl }) {
                 <TouchableOpacity activeOpacity={0.2} style={[styles.row, styles.middle]} onPress={onPressWhatsapp}>
                     <View style={styles.grow}>
                         <View>
-                            <View>
-                                <Text>{control.nota}</Text>
-                            </View>
                             <Text style={[styles.grow, styles.shrink, styles.justify, styles.bold]} ellipsizeMode="middle">
-                                {control.nombre}
+                                {paciente.Nombre}
                             </Text>
+                            <View>
+                                <Text>Ult. Pago: {format(paciente.Fecha, IFormat['DD/MM/YY'])} - Deuda: {formatCurrency(paciente.Deuda)}{moneda.Simbolo}</Text>
+                            </View>
                         </View>
                     </View>
                     <View>
@@ -59,4 +61,4 @@ function ControlPacienteList({ control }: { control: IControl }) {
     );
 }
 
-export default ControlPacienteList;
+export default DeudoresList;
